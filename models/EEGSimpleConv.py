@@ -5,6 +5,17 @@ class EEGSimpleConv(torch.nn.Module):
     def __init__(self, fm, n_convs, resampling, kernel_size,n_chan,n_classes,sfreq,n_subjects=None):
         super(EEGSimpleConv, self).__init__()
         #self.pool = torch.nn.AvgPool1d(init_pool)
+        '''
+        Parameters:
+        fm (int): Number of out_channels for conv layer
+        n_chan (int): Number of in_channels for conv layers
+        n_convs (int): Number of convolutional blocks
+        kernel_size (int or tuple): Size of the convolving kernel
+        sfreq (int): Original frequency of the signal
+        resampling (int): Desired frequency of the signal
+        n_subjects (int): Number of subjects in the dataset, if None no subject regularization is applied
+
+        '''
         self.rs = Resample(orig_freq=sfreq,new_freq=resampling)
         self.conv = torch.nn.Conv1d(n_chan, fm, kernel_size = kernel_size, padding = kernel_size // 2, bias = False)
         self.bn = torch.nn.BatchNorm1d(fm)
@@ -27,6 +38,11 @@ class EEGSimpleConv(torch.nn.Module):
         self.blocks = torch.nn.ModuleList(self.blocks)
         self.fc = torch.nn.Linear(oldfm, n_classes)
         self.fc2 = torch.nn.Linear(oldfm, n_subjects) if n_subjects else None #Subject regularization
+        
+
+    def compute_wasserstein_distance(self, n_subjects):
+
+        return torch.norm(x - y, p = 2, dim = 1)
 
 
     def forward(self, x):

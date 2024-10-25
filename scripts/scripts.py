@@ -3,7 +3,7 @@ from models.EEGSimpleConv import EEGSimpleConv
 import numpy as np
 import random
 
-import wandb ### uncomment this line to use wandb
+import wandb 
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #batch_size = 288
@@ -290,7 +290,7 @@ def train_test(params, dict_config,X,Y):
     if dict_config['preload_reg']==True:
         params_model = params + [len(Y)]
     if dict_config['use_wandb']:
-        wandb.init(project="simpleconv_c", entity='brain-imt',config = dict_config,settings=wandb.Settings(start_method='fork'))
+        wandb.init(project="simpleconv_c", config = dict_config,settings=wandb.Settings(start_method="fork"))
     
     
     model = instanciate_model(dict_config['model'],params_model)

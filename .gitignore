@@ -75,4 +75,7 @@ wandb/
 #Output files
 *.out
 *.pyc
+*.png
+
+
 
